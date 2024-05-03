@@ -1,7 +1,5 @@
-use std::fs;
 use std::io::Error;
 use std::path::PathBuf;
-use std::time::Instant; // Import the 'Instant' type for timekeeping
 
 use indicatif::{ProgressBar, ProgressStyle};
 use polars::prelude::LazyFrame;
@@ -11,19 +9,11 @@ use walkdir::WalkDir;
 fn parquet_to_csv(input_path: &PathBuf, output_path: &PathBuf) -> Result<(), Error> {
     let output_path = output_path.join(input_path.file_stem().unwrap()).with_extension("csv");
 
-    let start_time = Instant::now(); // Record start time
-
+    // Scan parquet file into dataframe using Lazy API
     let lf = LazyFrame::scan_parquet( &input_path, Default::default()).unwrap();
-    let parquet_read_time = start_time.elapsed(); // Time after reading Parquet
     
-    let conversion_start_time = Instant::now(); // Start time for CSV conversion
+    // Convert the file into csv with direct method
     lf.sink_csv(output_path, Default::default()).unwrap();
-
-    let csv_conversion_time = conversion_start_time.elapsed(); // Time after CSV conversion
-
-    println!("Parquet file successfully converted!");
-    println!("Parquet reading time: {:.2?}", parquet_read_time);
-    println!("CSV conversion time: {:.2?}", csv_conversion_time);
 
     Ok(())
 }
