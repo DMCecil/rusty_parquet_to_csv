@@ -1,26 +1,27 @@
+// Standard imports
 use std::io::Error;
 use std::path::PathBuf;
+use clap::Parser;
 
+// Internal modules import
+mod arg_parser;
+mod parquet_utils;
+
+// Struct and function import from internal modules
+use arg_parser::Args;
+use parquet_utils::parquet_to_csv;
+
+// External crate imports
 use indicatif::{ProgressBar, ProgressStyle};
-use polars::prelude::LazyFrame;
 use rayon::prelude::*;
 use walkdir::WalkDir;
 
-fn parquet_to_csv(input_path: &PathBuf, output_path: &PathBuf) -> Result<(), Error> {
-    let output_path = output_path.join(input_path.file_stem().unwrap()).with_extension("csv");
-
-    // Scan parquet file into dataframe using Lazy API
-    let lf = LazyFrame::scan_parquet( &input_path, Default::default()).unwrap();
-    
-    // Convert the file into csv with direct method
-    lf.sink_csv(output_path, Default::default()).unwrap();
-
-    Ok(())
-}
 
 fn main() -> Result<(), Error> {
-    let input_dir = "input/";
-    let output_dir = "output/";
+    let args = Args::parse();
+
+    let input_dir = &args.input_dir;
+    let output_dir = &args.output_dir;
     
     // Find all .parquet.gzip files in the directory
     let parquet_files = WalkDir::new(input_dir)
