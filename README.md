@@ -26,8 +26,8 @@ Tired of clunky Parquet files? Let's turn them into beautiful CSV data with ease
 ### Built With
 - Love for data ❤️
 - The power of Rust 🦀
-- The awesome Polars library for data manipulation
-- The fantastic Clap crate for command-line superpowers
+- The awesome Polars library for data manipulation 🐻‍❄️
+- The fantastic Clap crate for command-line superpowers ⚡
 
 ### Disclaimer
 This script won't magically make your data problems disappear, but it might make them a little easier to handle.
