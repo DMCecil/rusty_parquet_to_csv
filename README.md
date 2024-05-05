@@ -20,7 +20,6 @@ Tired of clunky Parquet files? Let's turn them into beautiful CSV data with ease
    ```
 
    ```powershell
-   ```bash
    .\your_application.exe --input_dir ./my_parquet_stash --output_dir ./csv_files --jobs n_jobs
    ```
 
