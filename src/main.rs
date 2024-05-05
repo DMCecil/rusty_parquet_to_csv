@@ -1,5 +1,4 @@
 // Standard imports
-use std::io::Error;
 use std::path::PathBuf;
 use clap::Parser;
 
@@ -16,8 +15,18 @@ use indicatif::{ProgressBar, ProgressStyle};
 use rayon::prelude::*;
 use walkdir::WalkDir;
 
+#[derive(Debug)]
+struct NoParquetFilesError;
 
-fn main() -> Result<(), Error> {
+impl std::fmt::Display for NoParquetFilesError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "No Parquet files found in the specified directory.")
+    }
+}
+
+impl std::error::Error for NoParquetFilesError {}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
 
     let input_dir = &args.input_dir;
@@ -36,6 +45,10 @@ fn main() -> Result<(), Error> {
         })
         .map(|entry| entry.path().to_path_buf())
         .collect::<Vec<_>>();
+
+    if parquet_files.is_empty() {
+        return Err(Box::new(NoParquetFilesError));
+    }
 
     // Create a progress bar 
     let pb = ProgressBar::new(parquet_files.len() as u64);
