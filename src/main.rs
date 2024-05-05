@@ -4,27 +4,18 @@ use clap::Parser;
 
 // Internal modules import
 mod arg_parser;
+mod errors;
 mod parquet_utils;
 
 // Struct and function import from internal modules
 use arg_parser::Args;
+use errors::NoParquetFilesError;
 use parquet_utils::parquet_to_csv;
 
 // External crate imports
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::prelude::*;
 use walkdir::WalkDir;
-
-#[derive(Debug)]
-struct NoParquetFilesError;
-
-impl std::fmt::Display for NoParquetFilesError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "No Parquet files found in the specified directory.")
-    }
-}
-
-impl std::error::Error for NoParquetFilesError {}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
