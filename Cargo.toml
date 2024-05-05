@@ -10,6 +10,7 @@ linker = "x86_64-w64-mingw32-gcc"
 [dependencies]
 clap = { version = "4.5.4", features = ["derive"] }
 indicatif = "0.17.8"
+num_cpus = "1.16.0"
 polars ={ version = "0.39.2", features = ["lazy", "parquet", "polars-io", "csv", "streaming"] }
 rayon = "1.10.0"
 walkdir = "2.5.0"

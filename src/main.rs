@@ -31,6 +31,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let input_dir = &args.input_dir;
     let output_dir = &args.output_dir;
+    let num_jobs = args.jobs;
     
     // Find all .parquet.gzip files in the directory
     let parquet_files = WalkDir::new(input_dir)
@@ -59,7 +60,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Convert files in parallel, updating the progress bar
     let output_dir_path = PathBuf::from(output_dir);
-    parquet_files.par_iter().for_each(|parquet_file| {
+    parquet_files.par_iter().with_max_len(num_jobs).for_each(|parquet_file| {
         if let Err(e) = parquet_to_csv(parquet_file, &output_dir_path) {
             eprintln!("Error converting {}: {}", parquet_file.display(), e)
         }

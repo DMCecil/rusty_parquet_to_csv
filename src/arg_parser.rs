@@ -11,4 +11,8 @@ pub struct Args {
     /// Output directory for converted CSV files
     #[arg(short = 'o', long = "output_dir")]
     pub output_dir: String,
+
+    /// Number of jobs to be spun up concurrently
+    #[arg(short = 'j', long = "jobs", default_value_t = num_cpus::get())]
+    pub jobs: usize,
 }
