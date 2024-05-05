@@ -16,7 +16,13 @@ Tired of clunky Parquet files? Let's turn them into beautiful CSV data with ease
 4. **Let the conversion party begin!**  
 
    ```bash
-   ./your_application --input_dir ./my_parquet_stash --output_dir ./csv_files 
+   ./your_application --input_dir ./my_parquet_stash --output_dir ./csv_files --jobs n_jobs
+   ```
+
+   ```powershell
+   ```bash
+   .\your_application.exe --input_dir ./my_parquet_stash --output_dir ./csv_files --jobs n_jobs
+   ```
 
 ### Why Does This Exist?
 - Because sometimes you just need CSVs!
